@@ -1,5 +1,5 @@
 @import './general.css';
-@import '/css/header.css';
+@import './header.css';
 @import './main.css';
 @import './backdrop.css';
 @import './modal-add-card.css';
