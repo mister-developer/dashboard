@@ -46,19 +46,19 @@ const closeAddModal = () => {
 const closeInfoModal = () => {
   modalInfo.classList.remove('visible');
   modalAddCard.style.zIndex = '11';
-  backdrop.addEventListener('click', BackdropClickHandler);
+  backdrop.addEventListener('click', backdropClickHandler);
 };
 
 const showInfoModal = () => {
   modalInfo.classList.add('visible');
   modalAddCard.style.zIndex = '9';
-  backdrop.removeEventListener('click', BackdropClickHandler);
+  backdrop.removeEventListener('click', backdropClickHandler);
 };
 
 const showRemoveModal = cardId => {
   modalRemoveCard.classList.add('visible');
   toggleBackdrop();
-  backdrop.removeEventListener('click', BackdropClickHandler);
+  backdrop.removeEventListener('click', backdropClickHandler);
 
   removeCardBtn.replaceWith(removeCardBtn.cloneNode(true));
   removeCardBtn = modalRemoveCard.querySelector('.btn--remove');
@@ -67,7 +67,7 @@ const showRemoveModal = cardId => {
 
 const closeRemoveModal = () => {
   modalRemoveCard.classList.remove('visible');
-  backdrop.addEventListener('click', BackdropClickHandler);
+  backdrop.addEventListener('click', backdropClickHandler);
   toggleBackdrop();
 };
 
@@ -87,7 +87,6 @@ const createNewCard = (cardId, imgUrl, name, age, adress) => {
     </div>
   `
   cardsList.append(card);
-
   const removeModalBtn = card.querySelector('.open-remove-modal');
   removeModalBtn.addEventListener('click', removeModalHandler.bind(this, +card.id));
 };
@@ -127,7 +126,7 @@ const closeInfoModalHandler = () => {
   closeInfoModal();
 };
 
-const BackdropClickHandler = () => {
+const backdropClickHandler = () => {
   closeAddModal();
   toggleBackdrop();
 };
@@ -151,9 +150,7 @@ const addCardHandler = () => {
   };
   
   cards.push(newCard);
-
   const cardId = cards.indexOf(newCard);
-  
   createNewCard(cardId, newCard.imageURL, newCard.name, newCard.age, newCard.adress);
 
   closeAddModal();
@@ -168,9 +165,6 @@ const removeCardHandler = cardId => {
 addModalBtn.addEventListener('click', addModalHandler);
 cancelAddModalBtn.addEventListener('click', cancelAddModalHandler);
 addCardBtn.addEventListener('click', addCardHandler);
-
 closeInfoModalBtn.addEventListener('click', closeInfoModalHandler);
-
 cancelRemoveModalBtn.addEventListener('click', cancelRemoveModalHandler);
-
-backdrop.addEventListener('click', BackdropClickHandler);
+backdrop.addEventListener('click', backdropClickHandler);
