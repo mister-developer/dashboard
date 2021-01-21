@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="./css/index.css">
+  <script src="./js/app.js" defer></script>
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="modal add-card">
+    <div class="modal__content">
+      <label for="img-url">Image URL</label>
+      <input type="text" name="img-url" id="img-url">
+      <label for="name">Your name</label>
+      <input type="text" name="name" id="name">
+      <label for="age">Your age</label>
+      <input type="number" name="age" id="age">
+      <label for="adress">Adress</label>
+      <input type="text" name="adress" id="about">
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--cancel">Cancel</button>
+      <button class="btn btn--add">Add</button>
+    </div>
+  </div>
+  <div class="modal remove-card">
+    <h2>Are you shure?</h2>
+    <p class="modal__info">Are you sure you want to delete this item? This action can't be made
+      undone!</p>
+    <div class="modal__actions">
+      <button class="btn btn--cancel">No</button>
+      <button class="btn btn--remove">Yes</button>
+    </div>
+  </div>
+  <div class="modal modal--info">
+    <h3 class="modal--info__text">Please enter valid values (age can't be negative or 0)</h3>
+    <button class="btn btn--close">OK</button>
+  </div>
+  <header class="main-header">
+    <h1>Drag'n'Drop example</h1>
+    <button class="open-modal">ADD CARD</button>
+  </header>
+  <main>
+    <section class="entry-text">
+      <p>Add card to see it!</p>
+    </section>
+    <section class="cards"></section>
+  </main>
+</body>
+</html>

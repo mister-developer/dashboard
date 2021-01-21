@@ -1,0 +1,15 @@
+.modal--info__text {
+  text-align: center;
+  margin-top: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.btn--close {
+  display: block;
+  margin: 1rem auto;
+}
+
+.modal--info.visible {
+  display: block;
+}

@@ -1,0 +1,11 @@
+.modal h2 {
+  font-size: 2rem;
+  color: #aa0624;
+  margin: 1.5rem 1rem;
+}
+
+.modal__info {
+  height: 5rem;
+  margin: 1rem;
+  font-weight: bold;
+}

@@ -1,0 +1,12 @@
+.entry-text {
+  width: 40rem;
+  margin: 0 auto 2rem;
+  padding: 3rem;
+  border-radius: 7px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.26);
+}
+
+.entry-text p {
+  text-align: center;
+  font-size: 2rem;
+}

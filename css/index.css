@@ -1,0 +1,8 @@
+@import './general.css';
+@import '/css/header.css';
+@import './main.css';
+@import './backdrop.css';
+@import './modal-add-card.css';
+@import './modal-remove-card.css';
+@import './cards.css';
+@import './modal-info.css';
