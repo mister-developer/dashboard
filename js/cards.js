@@ -8,7 +8,6 @@ const closeInfoModalBtn = document.querySelector('.btn--close');
 
 const modalRemoveCard = document.querySelector('.remove-card');
 const cancelRemoveModalBtn = modalRemoveCard.querySelector('.btn--cancel');
-let removeCardBtn = modalRemoveCard.querySelector('.btn--remove');
 
 const entryText = document.querySelector('.entry-text');
 const backdrop = document.querySelector('.backdrop');
@@ -57,8 +56,10 @@ const showInfoModal = () => {
 
 const showRemoveModal = cardId => {
   modalRemoveCard.classList.add('visible');
-  toggleBackdrop();
   backdrop.removeEventListener('click', backdropClickHandler);
+  toggleBackdrop();
+
+  let removeCardBtn = modalRemoveCard.querySelector('.btn--remove');
 
   removeCardBtn.replaceWith(removeCardBtn.cloneNode(true));
   removeCardBtn = modalRemoveCard.querySelector('.btn--remove');
@@ -87,13 +88,45 @@ const createNewCard = (cardId, imgUrl, name, age, adress) => {
     </div>
   `
   cardsList.append(card);
-  const removeModalBtn = card.querySelector('.open-remove-modal');
-  removeModalBtn.addEventListener('click', removeModalHandler.bind(this, +card.id));
+
+  card.addEventListener('mousedown', function cardMoveHandler(event) {
+    // distance from cursor to upper left corner of card
+    let shiftX = event.clientX - card.getBoundingClientRect().left;
+    let shiftY = event.clientY - card.getBoundingClientRect().top;
+    // let cardCoordsLeft = card.getBoundingClientRect().left;
+    // let cardCoordsRight = card.getBoundingClientRect().right;
+    // let cardCoordsBottom = card.getBoundingClientRect().bottom;
+
+    const moveCardAt = (pageX, pageY) => {
+      card.style.left = pageX - shiftX + 'px';
+      card.style.top = pageY - shiftY + 'px';
+    };
+
+    const mouseMoveHandler = (event) => {
+      moveCardAt(event.pageX, event.pageY);
+    };
+
+    const removeBtnTarget = event.target.closest('.open-remove-modal');
+
+    if (!removeBtnTarget) {
+      card.style.position = 'absolute';
+      moveCardAt(event.pageX, event.pageY);
+      document.addEventListener('mousemove', mouseMoveHandler);
+    } else {
+      removeBtnTarget.addEventListener('click', removeModalHandler.bind(this, +card.id));
+    }
+    card.onmouseup = () => {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      card.onmouseup = null;
+    };
+  });
+  
+  card.ondragstart = () => { return false }; // disable browser drag&drop event
 };
 
 const removeCard = cardId => {
-  let cardIndex = 0;
   const cardsArray = Array.from(cardsList.querySelectorAll('.card'));
+  let cardIndex = 0;
   cardsArray.map((card, index) => {
     if (cardId == card.id) {
       cardIndex = index;
