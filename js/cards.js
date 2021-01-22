@@ -93,11 +93,11 @@ const createNewCard = (cardId, imgUrl, name, age, adress) => {
 
 const removeCard = cardId => {
   let cardIndex = 0;
-  cardsList.querySelectorAll('.cards').forEach(card => {
-    if (+card.id === cardId) {
-      return;
+  const cardsArray = Array.from(cardsList.querySelectorAll('.card'));
+  cardsArray.map((card, index) => {
+    if (cardId == card.id) {
+      cardIndex = index;
     }
-    cardIndex++;
   });
   cards.splice(cardIndex, 1);
   cardsList.children[cardIndex].remove();
