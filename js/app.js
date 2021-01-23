@@ -16,25 +16,13 @@ const cardsList = document.querySelector('.cards');
 
 const cards = [];
 
-const clearUserInputs = () => {
-  userInputs.forEach(input => input.value = '');
-};
-
-const updateUI = () => {
-  if (cards.length == 0) {
-    entryText.style.display = 'block';
-  } else {
-    entryText.style.display = 'none';
-  }
-};
-
 const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
 };
 
 const showAddModal = () => {
   modalAddCard.classList.add('visible');
-  toggleBackdrop();
+  backdrop.classList.add('visible');
 };
 
 const closeAddModal = () => {
@@ -57,7 +45,7 @@ const showInfoModal = () => {
 const showRemoveModal = cardId => {
   modalRemoveCard.classList.add('visible');
   backdrop.removeEventListener('click', backdropClickHandler);
-  toggleBackdrop();
+  backdrop.classList.add('visible');
 
   let removeCardBtn = modalRemoveCard.querySelector('.btn--remove');
 
@@ -69,7 +57,51 @@ const showRemoveModal = cardId => {
 const closeRemoveModal = () => {
   modalRemoveCard.classList.remove('visible');
   backdrop.addEventListener('click', backdropClickHandler);
-  toggleBackdrop();
+  backdrop.classList.remove('visible');
+};
+
+const clearUserInputs = () => {
+  userInputs.forEach(input => input.value = '');
+};
+
+const updateUI = () => {
+  if (cards.length == 0) {
+    entryText.style.display = 'block';
+  } else {
+    entryText.style.display = 'none';
+  }
+};
+
+const moveCard = (event, card) => {
+  // distance from cursor to upper left corner of card
+  let shiftX = event.clientX - card.getBoundingClientRect().left;
+  let shiftY = event.clientY - card.getBoundingClientRect().top;
+  // let cardCoordsLeft = card.getBoundingClientRect().left;
+  // let cardCoordsRight = card.getBoundingClientRect().right;
+  // let cardCoordsBottom = card.getBoundingClientRect().bottom;
+
+  const moveCardAt = (pageX, pageY) => {
+    card.style.left = pageX - shiftX + 'px';
+    card.style.top = pageY - shiftY + 'px';
+  };
+
+  const mouseMoveHandler = (event) => {
+    moveCardAt(event.pageX, event.pageY);
+  };
+
+  const removeBtnTarget = event.target.closest('.open-remove-modal');
+
+  if (!removeBtnTarget) {
+    card.style.position = 'absolute';
+    moveCardAt(event.pageX, event.pageY);
+    document.addEventListener('mousemove', mouseMoveHandler);
+  } else {
+    removeBtnTarget.addEventListener('click', removeModalHandler.bind(this, +card.id));
+  }
+  card.onmouseup = () => {
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    card.onmouseup = null;
+  };
 };
 
 const createNewCard = (cardId, imgUrl, name, age, adress) => {
@@ -89,36 +121,8 @@ const createNewCard = (cardId, imgUrl, name, age, adress) => {
   `
   cardsList.append(card);
 
-  card.addEventListener('mousedown', function cardMoveHandler(event) {
-    // distance from cursor to upper left corner of card
-    let shiftX = event.clientX - card.getBoundingClientRect().left;
-    let shiftY = event.clientY - card.getBoundingClientRect().top;
-    // let cardCoordsLeft = card.getBoundingClientRect().left;
-    // let cardCoordsRight = card.getBoundingClientRect().right;
-    // let cardCoordsBottom = card.getBoundingClientRect().bottom;
-
-    const moveCardAt = (pageX, pageY) => {
-      card.style.left = pageX - shiftX + 'px';
-      card.style.top = pageY - shiftY + 'px';
-    };
-
-    const mouseMoveHandler = (event) => {
-      moveCardAt(event.pageX, event.pageY);
-    };
-
-    const removeBtnTarget = event.target.closest('.open-remove-modal');
-
-    if (!removeBtnTarget) {
-      card.style.position = 'absolute';
-      moveCardAt(event.pageX, event.pageY);
-      document.addEventListener('mousemove', mouseMoveHandler);
-    } else {
-      removeBtnTarget.addEventListener('click', removeModalHandler.bind(this, +card.id));
-    }
-    card.onmouseup = () => {
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      card.onmouseup = null;
-    };
+  card.addEventListener('mousedown', (event) => {
+    moveCard(event, card);
   });
   
   card.ondragstart = () => { return false }; // disable browser drag&drop event
