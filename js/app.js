@@ -86,9 +86,7 @@ const moveCard = (event, card) => {
     // let newBottom = newShiftY + card.offsetHeight;
 
     const cardListRightSide = cardsList.offsetWidth - card.offsetWidth - SHIFT;
-    const documentBottom = document.documentElement.clientHeight;
-
-    console.log(documentBottom)
+    // const documentBottom = document.documentElement.clientHeight;
 
     if (newShiftX < 0) {
       newShiftX = 0;
