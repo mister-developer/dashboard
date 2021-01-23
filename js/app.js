@@ -74,15 +74,32 @@ const updateUI = () => {
 
 const moveCard = (event, card) => {
   // distance from cursor to upper left corner of card
-  let shiftX = event.clientX - card.getBoundingClientRect().left;
-  let shiftY = event.clientY - card.getBoundingClientRect().top;
-  // let cardCoordsLeft = card.getBoundingClientRect().left;
-  // let cardCoordsRight = card.getBoundingClientRect().right;
-  // let cardCoordsBottom = card.getBoundingClientRect().bottom;
+  let shiftLeft = event.clientX - card.getBoundingClientRect().left;
+  let shiftTop = event.clientY - card.getBoundingClientRect().top;
 
+  const SHIFT = 30;
+  
   const moveCardAt = (pageX, pageY) => {
-    card.style.left = pageX - shiftX + 'px';
-    card.style.top = pageY - shiftY + 'px';
+    let newShiftX = pageX - shiftLeft;
+    let newShiftY = pageY - shiftTop;
+
+    let newBottom = newShiftY + card.offsetHeight;
+
+    const cardListRightSide = cardsList.offsetWidth - card.offsetWidth - SHIFT;
+    const documentBottom = document.documentElement.clientHeight;
+
+    console.log(documentBottom)
+
+    if (newShiftX < 0) {
+      newShiftX = 0;
+    } else if (newShiftY < 0) {
+      newShiftY = 0;
+    } else if (newShiftX > cardListRightSide) {
+      newShiftX = cardListRightSide;
+    }
+
+    card.style.left = newShiftX + 'px';
+    card.style.top = newShiftY + 'px';
   };
 
   const mouseMoveHandler = (event) => {
@@ -98,6 +115,7 @@ const moveCard = (event, card) => {
   } else {
     removeBtnTarget.addEventListener('click', removeModalHandler.bind(this, +card.id));
   }
+
   card.onmouseup = () => {
     document.removeEventListener('mousemove', mouseMoveHandler);
     card.onmouseup = null;
